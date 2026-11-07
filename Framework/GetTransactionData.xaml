@@ -195,7 +195,7 @@
               <OutArgument x:TypeArguments="x:String">[out_TransactionID]</OutArgument>
             </Assign.To>
             <Assign.Value>
-              <InArgument x:TypeArguments="x:String">[out_TransactionItem.SpecificContent("WIID").ToString.Trim]</InArgument>
+              <InArgument x:TypeArguments="x:String">[If(out_TransactionItem.SpecificContent.ContainsKey("WIID"), out_TransactionItem.SpecificContent("WIID").ToString, out_TransactionItem.Reference).Trim]</InArgument>
             </Assign.Value>
           </Assign>
           <Assign DisplayName="Assign out_TransactionField1" sap:VirtualizedContainerService.HintSize="459.2,113.6" sap2010:WorkflowViewState.IdRef="Assign_6">
