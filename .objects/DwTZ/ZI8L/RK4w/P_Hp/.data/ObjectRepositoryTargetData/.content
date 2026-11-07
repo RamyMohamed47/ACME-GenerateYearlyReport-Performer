@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ObjectRepositoryTargetData ContentHash="IecJh-LPAUm_nRzm6J8FwA" xmlns="http://schemas.uipath.com/workflow/activities/uix" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ObjectRepositoryTargetData.Data>
+    <TargetAnchorable x:Key="TargetAnchorable" DesignTimeRectangle="383, 532, 466, 100" DesignTimeScaleFactor="1.25" ElementType="Text" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl tag='DIV' class='col-lg-5' visibleinnertext='Vendor Information*' /&gt;&lt;webctrl tag='P' /&gt;" Guid="23dfc42a-7665-497b-8ec3-16c038c9a957" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*ACME System 1*' url='https://acme-test.uipath.com/*' /&gt;" SearchSteps="Selector" Version="V6" WaitForReadyArgument="Interactive">
+      <TargetAnchorable.Anchors>
+        <scg:List x:TypeArguments="ITarget" Capacity="0" />
+      </TargetAnchorable.Anchors>
+      <imageRef attrName="InformativeScreenshot" originalValue="f58503bda10ba2f347b3711780bb6c9d.jpg" xmlns="">0yl8oMoayfkyoxFhqkCKBAw</imageRef>
+    </TargetAnchorable>
+  </ObjectRepositoryTargetData.Data>
+</ObjectRepositoryTargetData>

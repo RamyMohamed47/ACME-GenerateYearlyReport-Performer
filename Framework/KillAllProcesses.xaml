@@ -62,5 +62,6 @@
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <ui:LogMessage DisplayName="Log message (Kill processes)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Trace" Message="[&quot;Killing processes...&quot;]" />
+    <ui:KillProcess ContinueOnError="True" Process="{x:Null}" AppliesTo="All" DisplayName="Kill Process (chrome)" sap2010:WorkflowViewState.IdRef="KillProcess_1" ProcessName="chrome" />
   </Sequence>
 </Activity>

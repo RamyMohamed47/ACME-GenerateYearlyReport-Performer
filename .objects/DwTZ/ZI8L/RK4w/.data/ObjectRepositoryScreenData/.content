@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ObjectRepositoryScreenData ContentHash="4m3NFCCjPEONLa8NbSwJ8A" xmlns="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ObjectRepositoryScreenData.Data>
+    <TargetApp x:Key="TargetApp" Area="171, 249, 1611, 974" BrowserType="Chrome" Selector="&lt;html app='chrome.exe' title='*ACME System 1*' url='https://acme-test.uipath.com/*' /&gt;" Url="https://acme-test.uipath.com/home" Version="V3">
+      <TargetApp.SapInfo>
+        <SAPElementInfo IsSapSubsystem="False" WebAutomationFramework="Default" />
+      </TargetApp.SapInfo>
+      <imageRef attrName="InformativeScreenshot" originalValue="3973ddf0ae9d76218feeea809f346d96.jpg" xmlns="">02PmLC3GeXkypHWzBdhmm-A</imageRef>
+    </TargetApp>
+    <NInteractionMode x:Key="InteractionMode">DebuggerApi</NInteractionMode>
+  </ObjectRepositoryScreenData.Data>
+</ObjectRepositoryScreenData>

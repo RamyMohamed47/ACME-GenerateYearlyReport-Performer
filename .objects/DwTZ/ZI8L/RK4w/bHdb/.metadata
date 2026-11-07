@@ -1,0 +1,15 @@
+﻿{
+  "Name": "Download Year Dropdown",
+  "Description": "Year dropdown (bootstrap-select button, data-id reportYear) on the Download Monthly Report page",
+  "Type": "Element",
+  "TaxonomyType": "Button",
+  "Id": "bHdbYG4YJ0uTKN74reGQKQ",
+  "Reference": "Gk0ZsPmEKkOas-4bnDIx0g/bHdbYG4YJ0uTKN74reGQKQ",
+  "ParentRef": "Gk0ZsPmEKkOas-4bnDIx0g/RK4wNfI8VUCwXidDtrNQ8A",
+  "Created": "2026-11-07T14:46:03.6273142Z",
+  "Updated": "2026-11-07T14:46:03.6273142Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=26.10.6.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

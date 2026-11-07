@@ -1,0 +1,15 @@
+﻿{
+  "Name": "Download Month Dropdown",
+  "Description": "Month dropdown (bootstrap-select button, data-id reportMonth) on the Download Monthly Report page",
+  "Type": "Element",
+  "TaxonomyType": "Button",
+  "Id": "4gCTIXlzX0mQrRVEUV1g9A",
+  "Reference": "Gk0ZsPmEKkOas-4bnDIx0g/4gCTIXlzX0mQrRVEUV1g9A",
+  "ParentRef": "Gk0ZsPmEKkOas-4bnDIx0g/RK4wNfI8VUCwXidDtrNQ8A",
+  "Created": "2026-11-07T14:46:03.5234309Z",
+  "Updated": "2026-11-07T14:46:03.5234309Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=26.10.6.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

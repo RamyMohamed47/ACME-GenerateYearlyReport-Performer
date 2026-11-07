@@ -1,0 +1,15 @@
+﻿{
+  "Name": "Login Button",
+  "Description": "Login submit button on the ACME login page",
+  "Type": "Element",
+  "TaxonomyType": "Button",
+  "Id": "nI99x8HjUEaDsySQFYG5jA",
+  "Reference": "Gk0ZsPmEKkOas-4bnDIx0g/nI99x8HjUEaDsySQFYG5jA",
+  "ParentRef": "Gk0ZsPmEKkOas-4bnDIx0g/RK4wNfI8VUCwXidDtrNQ8A",
+  "Created": "2026-11-07T14:48:15.3333308Z",
+  "Updated": "2026-11-07T14:48:15.3333308Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=26.10.6.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

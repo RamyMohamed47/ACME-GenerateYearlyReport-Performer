@@ -1,0 +1,15 @@
+﻿{
+  "Name": "Login Email Input",
+  "Description": "Email text input on the ACME login page",
+  "Type": "Element",
+  "TaxonomyType": "Input",
+  "Id": "7-bdvWOGe0mPfhBTTTE9Cg",
+  "Reference": "Gk0ZsPmEKkOas-4bnDIx0g/7-bdvWOGe0mPfhBTTTE9Cg",
+  "ParentRef": "Gk0ZsPmEKkOas-4bnDIx0g/RK4wNfI8VUCwXidDtrNQ8A",
+  "Created": "2026-11-07T14:48:15.1628613Z",
+  "Updated": "2026-11-07T14:48:15.1628613Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=26.10.6.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

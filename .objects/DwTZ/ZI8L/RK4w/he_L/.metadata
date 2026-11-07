@@ -1,0 +1,15 @@
+﻿{
+  "Name": "Update Work Item Button",
+  "Description": "Update Work Item submit button on the Update Work Item page",
+  "Type": "Element",
+  "TaxonomyType": "Button",
+  "Id": "he_L8xwX9UCUJQartmcm1Q",
+  "Reference": "Gk0ZsPmEKkOas-4bnDIx0g/he_L8xwX9UCUJQartmcm1Q",
+  "ParentRef": "Gk0ZsPmEKkOas-4bnDIx0g/RK4wNfI8VUCwXidDtrNQ8A",
+  "Created": "2026-11-07T14:44:07.2852125Z",
+  "Updated": "2026-11-07T14:44:07.2852125Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=26.10.6.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

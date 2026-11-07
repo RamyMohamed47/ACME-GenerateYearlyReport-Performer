@@ -1,0 +1,15 @@
+﻿{
+  "Name": "Update New Status Dropdown",
+  "Description": "New Status dropdown (bootstrap-select button, data-id newStatus) on the Update Work Item page",
+  "Type": "Element",
+  "TaxonomyType": "Button",
+  "Id": "VMbqQK7v5023Nl1dF_K3cA",
+  "Reference": "Gk0ZsPmEKkOas-4bnDIx0g/VMbqQK7v5023Nl1dF_K3cA",
+  "ParentRef": "Gk0ZsPmEKkOas-4bnDIx0g/RK4wNfI8VUCwXidDtrNQ8A",
+  "Created": "2026-11-07T14:44:07.1983999Z",
+  "Updated": "2026-11-07T14:44:07.1983999Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=26.10.6.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

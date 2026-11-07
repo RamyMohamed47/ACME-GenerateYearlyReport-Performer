@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ObjectRepositoryTargetData ContentHash="uhuYIeDddkK_tBMJVbrr2A" xmlns="http://schemas.uipath.com/workflow/activities/uix" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ObjectRepositoryTargetData.Data>
+    <TargetAnchorable x:Key="TargetAnchorable" DesignTimeRectangle="344, 572, 275, 42" DesignTimeScaleFactor="1.25" ElementType="Button" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl tag='FORM' /&gt;&lt;webctrl aria-role='button' tag='BUTTON' type='button' class='btn dropdown-toggle bs-placeholder btn-default' aaname='---' /&gt;" FuzzySelectorArgument="&lt;webctrl tag='FORM' /&gt;&lt;webctrl aria-role='button' tag='BUTTON' type='button' class='btn dropdown-toggle bs-placeholder btn-default' aaname='---' matching:aria-role='fuzzy' fuzzylevel:aria-role='0.0' matching:class='fuzzy' fuzzylevel:class='0.0' matching:aaname='fuzzy' fuzzylevel:aaname='0.0' /&gt;" Guid="c0c15d0d-e0b6-40ef-ac46-0d02b618404f" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*ACME System 1*' url='https://acme-test.uipath.com/*' /&gt;" SearchSteps="FuzzySelector" Version="V6" WaitForReadyArgument="Interactive">
+      <TargetAnchorable.Anchors>
+        <scg:List x:TypeArguments="ITarget" Capacity="1">
+          <Target DesignTimeRectangle="344, 541, 43, 25" ElementType="Text" FuzzySelectorArgument="&lt;webctrl tag='FORM' visibleinnertext='*Select Report File*' fuzzylevel:visibleinnertext='0.0' /&gt;&lt;webctrl aaname='Year:' parentid='searchForm' parentname='searchForm' tag='LABEL' type='' class='' matching:aaname='fuzzy' fuzzylevel:aaname='0.0' matching:parentid='fuzzy' fuzzylevel:parentid='0.0' matching:parentname='fuzzy' fuzzylevel:parentname='0.0' matching:class='fuzzy' fuzzylevel:class='0.0' check:text='Year:' /&gt;" Guid="fdda0f7b-b1fc-49a4-8117-9c2620d7483c" SearchSteps="FuzzySelector" />
+        </scg:List>
+      </TargetAnchorable.Anchors>
+      <imageRef attrName="InformativeScreenshot" originalValue="e5cda7a75b3b67454746c7736141eb2e.jpg" xmlns="">0PlxHGjRb7EqIGZDFmbXocw</imageRef>
+    </TargetAnchorable>
+  </ObjectRepositoryTargetData.Data>
+</ObjectRepositoryTargetData>

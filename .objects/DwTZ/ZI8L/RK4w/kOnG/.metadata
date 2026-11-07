@@ -1,0 +1,15 @@
+﻿{
+  "Name": "Upload Select Report File Button",
+  "Description": "Select Report File label/button that opens the browser file picker on the Upload Yearly Report page",
+  "Type": "Element",
+  "TaxonomyType": "Label",
+  "Id": "kOnG-IaKF0WFbNPZ5VYtIw",
+  "Reference": "Gk0ZsPmEKkOas-4bnDIx0g/kOnG-IaKF0WFbNPZ5VYtIw",
+  "ParentRef": "Gk0ZsPmEKkOas-4bnDIx0g/RK4wNfI8VUCwXidDtrNQ8A",
+  "Created": "2026-11-07T14:45:04.1680281Z",
+  "Updated": "2026-11-07T14:45:04.1680281Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=26.10.6.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

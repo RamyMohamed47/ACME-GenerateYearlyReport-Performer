@@ -1,0 +1,13 @@
+﻿{
+  "Name": "ACME System 1",
+  "Description": "ACME System 1 test web app used by the UiPath Academy assignments",
+  "Type": "App",
+  "Id": "DwTZ1GvKF0ylUzGrEiauHg",
+  "Reference": "Gk0ZsPmEKkOas-4bnDIx0g/DwTZ1GvKF0ylUzGrEiauHg",
+  "Created": "2026-11-07T14:43:08.7221788Z",
+  "Updated": "2026-11-07T14:43:08.7221788Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=26.10.6.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

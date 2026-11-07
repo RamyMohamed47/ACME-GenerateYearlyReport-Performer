@@ -1,0 +1,15 @@
+﻿{
+  "Name": "Update New Comment Input",
+  "Description": "Add Comments text input on the Update Work Item page",
+  "Type": "Element",
+  "TaxonomyType": "Input",
+  "Id": "mtUwmo1WgUuWrhIAWL5ZrA",
+  "Reference": "Gk0ZsPmEKkOas-4bnDIx0g/mtUwmo1WgUuWrhIAWL5ZrA",
+  "ParentRef": "Gk0ZsPmEKkOas-4bnDIx0g/RK4wNfI8VUCwXidDtrNQ8A",
+  "Created": "2026-11-07T14:44:07.0797659Z",
+  "Updated": "2026-11-07T14:44:07.0797659Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=26.10.6.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

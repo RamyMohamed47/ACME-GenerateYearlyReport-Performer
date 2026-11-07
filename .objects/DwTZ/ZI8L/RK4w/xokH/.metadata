@@ -1,0 +1,15 @@
+﻿{
+  "Name": "Upload Vendor TaxID Input",
+  "Description": "Vendor TaxID text input on the Upload Yearly Report page",
+  "Type": "Element",
+  "TaxonomyType": "Input",
+  "Id": "xokHW6IM8kmYCPMLDAwmMQ",
+  "Reference": "Gk0ZsPmEKkOas-4bnDIx0g/xokHW6IM8kmYCPMLDAwmMQ",
+  "ParentRef": "Gk0ZsPmEKkOas-4bnDIx0g/RK4wNfI8VUCwXidDtrNQ8A",
+  "Created": "2026-11-07T14:45:03.9759351Z",
+  "Updated": "2026-11-07T14:45:03.9759351Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=26.10.6.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}
