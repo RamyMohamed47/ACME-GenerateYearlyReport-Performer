@@ -1,6 +1,21 @@
 {
   "Settings": {
-    "logF_BusinessProcessName": "Framework"
+    "logF_BusinessProcessName": "GenerateYearlyReport_Performer",
+    "OrchestratorQueueName": "ACME_GenerateYearlyReport",
+    "System1CredentialAssetName": "ACME_Credential",
+    "System1URL": "https://acme-test.uipath.com/login",
+    "System1WorkItemsURL": "https://acme-test.uipath.com/work-items",
+    "System1WorkItemDetailsURL": "https://acme-test.uipath.com/work-items/{WIID}",
+    "System1DownloadMonthlyReportURL": "https://acme-test.uipath.com/reports/download",
+    "System1UploadYearlyReportURL": "https://acme-test.uipath.com/reports/upload",
+    "System1UpdateWorkItemURL": "https://acme-test.uipath.com/work-items/update/{WIID}",
+    "ReportDirPath": "Data\\Output\\Reports",
+    "ReportYear": "2025",
+    "Status": "Completed",
+    "BrowserDownloadFolder": "",
+    "DownloadTimeoutSeconds": 15,
+    "ExceptionsEmailAddress": "exceptions@acme-test.com",
+    "SendExceptionEmail": false
   },
   "Constants": {
     "MaxRetryNumber": 0,
