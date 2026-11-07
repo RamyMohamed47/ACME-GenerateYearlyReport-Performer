@@ -1,0 +1,128 @@
+<Activity mc:Ignorable="sap2010" x:Class="System1_System1_MergeMonthlyReports" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:sc="clr-namespace:System.Collections;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property sap2010:Annotation.AnnotationText="Vendor Tax ID whose monthly CSVs are merged." Name="in_TaxID" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Report year (e.g. 2025)." Name="in_Year" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Full path of the folder holding the monthly CSVs (&lt;TaxID&gt;-&lt;Year&gt;-&lt;MM&gt;.csv); the yearly report is written there too." Name="in_ReportDirPath" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Full path of the created Yearly-Report-&lt;Year&gt;-&lt;TaxID&gt;.xlsx." Name="out_YearlyReportPath" Type="OutArgument(x:String)" />
+  </x:Members>
+  <VisualBasic.Settings>
+    <x:Null />
+  </VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>GlobalConstantsNamespace</x:String>
+      <x:String>GlobalVariablesNamespace</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>UiPath.CSV.Activities</x:String>
+      <x:String>UiPath.Excel.Activities</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic.Core</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Collections</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.TypeConverter</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Common</AssemblyReference>
+      <AssemblyReference>System.Linq</AssemblyReference>
+      <AssemblyReference>System.ObjectModel</AssemblyReference>
+      <AssemblyReference>System.Private.CoreLib</AssemblyReference>
+      <AssemblyReference>System.Runtime</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Workflow</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Reads every monthly CSV for the Tax ID and year (&lt;TaxID&gt;-&lt;Year&gt;-&lt;MM&gt;.csv, in month order), merges them into one DataTable and writes Yearly-Report-&lt;Year&gt;-&lt;TaxID&gt;.xlsx with Workbook activities (no Excel needed).&#xA;No CSV found -&gt; BusinessRuleException." DisplayName="System1 Merge Monthly Reports" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="s:String[]" Name="MonthlyCsvFiles" />
+      <Variable x:TypeArguments="sd:DataTable" Name="dt_YearlyReport" />
+    </Sequence.Variables>
+    <Assign DisplayName="Assign MonthlyCsvFiles (sorted by month)" sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="s:String[]">[MonthlyCsvFiles]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="s:String[]">[If(Directory.Exists(in_ReportDirPath), Directory.GetFiles(in_ReportDirPath, in_TaxID &amp; "-" &amp; in_Year &amp; "-*.csv").OrderBy(Function(f) f).ToArray, New String() {})]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <If Condition="[MonthlyCsvFiles.Length = 0]" DisplayName="If no monthly CSV found" sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Then>
+        <Sequence DisplayName="Then" sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <Throw DisplayName="Throw BusinessRuleException (no monthly reports)" Exception="[New BusinessRuleException(&quot;No monthly reports found for Tax ID &quot; + in_TaxID + &quot; in &quot; + in_Year + &quot; to merge.&quot;)]" sap2010:WorkflowViewState.IdRef="Throw_1" />
+        </Sequence>
+      </If.Then>
+    </If>
+    <ui:MultipleAssign DisplayName="Multiple Assign (empty yearly table, output path)" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+      <ui:MultipleAssign.AssignOperations>
+        <scg:List x:TypeArguments="ui:AssignOperation" Capacity="2" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib">
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="sd:DataTable">[dt_YearlyReport]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="sd:DataTable">[New DataTable]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:String">[out_YearlyReportPath]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:String">[Path.Combine(in_ReportDirPath, "Yearly-Report-" &amp; in_Year &amp; "-" &amp; in_TaxID &amp; ".xlsx")]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+        </scg:List>
+      </ui:MultipleAssign.AssignOperations>
+    </ui:MultipleAssign>
+    <ui:ForEach x:TypeArguments="x:String" DisplayName="For Each monthly CSV" sap2010:WorkflowViewState.IdRef="ForEach`1_1">
+      <ui:ForEach.Values>
+        <InArgument x:TypeArguments="sc:IEnumerable">[MonthlyCsvFiles]</InArgument>
+      </ui:ForEach.Values>
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="x:String">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:String" Name="monthlyCsvFile" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_3">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="sd:DataTable" Name="dt_MonthlyReport" />
+            </Sequence.Variables>
+            <ui:ReadCsvFile PathResource="{x:Null}" DataTable="[dt_MonthlyReport]" Delimitator="Comma" DelimitatorForViewModel="Comma" DisplayName="Read CSV (monthly report)" FilePath="[monthlyCsvFile]" IncludeColumnNames="True" sap2010:WorkflowViewState.IdRef="ReadCsvFile_1" />
+            <ui:MergeDataTable Destination="[dt_YearlyReport]" DisplayName="Merge Data Table (into yearly)" MissingSchemaAction="Add" Source="[dt_MonthlyReport]" sap2010:WorkflowViewState.IdRef="MergeDataTable_1" />
+            <ui:LogMessage DisplayName="Log Message (merged file)" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Trace" Message="[&quot;Merged &quot; + dt_MonthlyReport.Rows.Count.ToString + &quot; rows from &quot; + monthlyCsvFile]" />
+          </Sequence>
+        </ActivityAction>
+      </ui:ForEach.Body>
+    </ui:ForEach>
+    <If Condition="[File.Exists(out_YearlyReportPath)]" DisplayName="If yearly report already exists" sap2010:WorkflowViewState.IdRef="If_2">
+      <If.Then>
+        <Sequence DisplayName="Then" sap2010:WorkflowViewState.IdRef="Sequence_4">
+          <ui:DeleteFileX DisplayName="Delete File (old yearly report)" sap2010:WorkflowViewState.IdRef="DeleteFileX_1" Path="[out_YearlyReportPath]" />
+        </Sequence>
+      </If.Then>
+    </If>
+    <ui:WriteRange AddHeaders="True" DataTable="[dt_YearlyReport]" DisplayName="Write Range (yearly report workbook)" SheetName="Sheet1" StartingCell="A1" WorkbookPath="[out_YearlyReportPath]" sap2010:WorkflowViewState.IdRef="WriteRange_1" />
+    <ui:LogMessage DisplayName="Log Message (yearly report created)" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;Yearly report created: &quot; + out_YearlyReportPath + &quot; (&quot; + MonthlyCsvFiles.Length.ToString + &quot; months, &quot; + dt_YearlyReport.Rows.Count.ToString + &quot; rows).&quot;]" />
+  </Sequence>
+</Activity>
