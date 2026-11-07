@@ -1,0 +1,172 @@
+<Activity mc:Ignorable="sap2010" x:Class="System1_System1_UploadYearlyReport" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Drawing;assembly=System.Drawing.Common" xmlns:sd1="clr-namespace:System.Drawing;assembly=System.Drawing.Primitives" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property sap2010:Annotation.AnnotationText="Vendor Tax ID the yearly report belongs to." Name="in_TaxID" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Report year as shown in the ACME Year dropdown (e.g. 2025)." Name="in_Year" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Full path of the Yearly-Report-&lt;Year&gt;-&lt;TaxID&gt;.xlsx to upload." Name="in_YearlyReportPath" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Upload confirmation ID returned by ACME (trimmed)." Name="out_Confirmation" Type="OutArgument(x:String)" />
+  </x:Members>
+  <VisualBasic.Settings>
+    <x:Null />
+  </VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>GlobalConstantsNamespace</x:String>
+      <x:String>GlobalVariablesNamespace</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text.RegularExpressions</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>UiPath.UIAutomationNext.Enums</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic.Core</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Collections</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.TypeConverter</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Common</AssemblyReference>
+      <AssemblyReference>System.Drawing.Common</AssemblyReference>
+      <AssemblyReference>System.Drawing.Primitives</AssemblyReference>
+      <AssemblyReference>System.Linq</AssemblyReference>
+      <AssemblyReference>System.ObjectModel</AssemblyReference>
+      <AssemblyReference>System.Private.CoreLib</AssemblyReference>
+      <AssemblyReference>System.Runtime</AssemblyReference>
+      <AssemblyReference>System.Text.RegularExpressions</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Workflow</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="On the Upload Yearly Report page: enters the Tax ID and year, picks the yearly report file, uploads it and reads the Upload ID from the confirmation alert (the alert is closed).&#xA;Page not loaded, no confirmation or no ID -&gt; System Exception." DisplayName="System1 Upload Yearly Report" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="ConfirmationText" />
+    </Sequence.Variables>
+    <uix:NApplicationCard AttachMode="ByInstance" CloseMode="Never" DisplayName="Use Browser Chrome: ACME System 1 (attach)" HealingAgentBehavior="Job" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" InteractionMode="DebuggerApi" OpenMode="Never" ScopeGuid="99098d95-3c8f-4bbc-a18a-a65dca265269" Version="V2">
+      <uix:NApplicationCard.Body>
+        <ActivityAction x:TypeArguments="x:Object">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <uix:NCheckState DisplayName="Check App State: Upload Yearly Report page loaded" HealingAgentBehavior="Disabled" sap2010:WorkflowViewState.IdRef="NCheckState_1" Timeout="10" Version="V5">
+              <uix:NCheckState.IfExists>
+                <Sequence DisplayName="Target appears" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                  <ui:LogMessage DisplayName="Log Message (page loaded)" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Trace" Message="[&quot;Upload Yearly Report page loaded.&quot;]" />
+                </Sequence>
+              </uix:NCheckState.IfExists>
+              <uix:NCheckState.IfNotExists>
+                <Sequence DisplayName="Target does not appear" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                  <Throw DisplayName="Throw System Exception (page not loaded)" Exception="[New Exception(&quot;ACME Upload Yearly Report page did not load.&quot;)]" sap2010:WorkflowViewState.IdRef="Throw_1" />
+                </Sequence>
+              </uix:NCheckState.IfNotExists>
+              <uix:NCheckState.Target>
+                <uix:TargetAnchorable ContentHash="Qtgh5nlMF0ac2oMSOn7d9g" DesignTimeRectangle="344, 480, 606, 42" ElementType="InputBox" ElementVisibilityArgument="Interactive" FuzzySelectorArgument="&lt;webctrl tag='FORM' /&gt;&lt;webctrl id='vendorTaxID' tag='INPUT' type='text' class='form-control' aaname='' matching:id='fuzzy' fuzzylevel:id='0.0' matching:class='fuzzy' fuzzylevel:class='0.0' matching:aaname='fuzzy' fuzzylevel:aaname='0.0' /&gt;" Guid="88da1908-3846-429c-a5c0-ab3e2fad2ed8" InformativeScreenshot="a9e7403c138b51f791cbfbe46241d0de.jpg" Reference="Gk0ZsPmEKkOas-4bnDIx0g/xokHW6IM8kmYCPMLDAwmMQ" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*ACME System 1*' url='https://acme-test.uipath.com/*' /&gt;" SearchSteps="FuzzySelector" Version="V6" WaitForReadyArgument="Interactive">
+                  <uix:TargetAnchorable.Anchors>
+                    <scg:List x:TypeArguments="uix:ITarget" Capacity="1">
+                      <uix:Target DesignTimeRectangle="344, 449, 116, 25" ElementType="Text" FuzzySelectorArgument="&lt;webctrl tag='LABEL' type='' class='' aaname='Vendor TaxID:' matching:class='fuzzy' fuzzylevel:class='0.0' matching:aaname='fuzzy' fuzzylevel:aaname='0.0' check:text='Vendor TaxID:' /&gt;" Guid="ab33ffa7-32db-4561-9b78-10ca72324f3f" SearchSteps="FuzzySelector" />
+                    </scg:List>
+                  </uix:TargetAnchorable.Anchors>
+                </uix:TargetAnchorable>
+              </uix:NCheckState.Target>
+            </uix:NCheckState>
+            <uix:NTypeInto ActivateBefore="True" ClickBeforeMode="Single" DisplayName="Type Into Vendor TaxID" EmptyFieldMode="SingleLine" HealingAgentBehavior="SameAsCard" sap2010:WorkflowViewState.IdRef="NTypeInto_1" Text="[in_TaxID]" Version="V5">
+              <uix:NTypeInto.Target>
+                <uix:TargetAnchorable ContentHash="Qtgh5nlMF0ac2oMSOn7d9g" DesignTimeRectangle="344, 480, 606, 42" ElementType="InputBox" ElementVisibilityArgument="Interactive" FuzzySelectorArgument="&lt;webctrl tag='FORM' /&gt;&lt;webctrl id='vendorTaxID' tag='INPUT' type='text' class='form-control' aaname='' matching:id='fuzzy' fuzzylevel:id='0.0' matching:class='fuzzy' fuzzylevel:class='0.0' matching:aaname='fuzzy' fuzzylevel:aaname='0.0' /&gt;" Guid="88da1908-3846-429c-a5c0-ab3e2fad2ed8" InformativeScreenshot="a9e7403c138b51f791cbfbe46241d0de.jpg" Reference="Gk0ZsPmEKkOas-4bnDIx0g/xokHW6IM8kmYCPMLDAwmMQ" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*ACME System 1*' url='https://acme-test.uipath.com/*' /&gt;" SearchSteps="FuzzySelector" Version="V6" WaitForReadyArgument="Interactive">
+                  <uix:TargetAnchorable.Anchors>
+                    <scg:List x:TypeArguments="uix:ITarget" Capacity="1">
+                      <uix:Target DesignTimeRectangle="344, 449, 116, 25" ElementType="Text" FuzzySelectorArgument="&lt;webctrl tag='LABEL' type='' class='' aaname='Vendor TaxID:' matching:class='fuzzy' fuzzylevel:class='0.0' matching:aaname='fuzzy' fuzzylevel:aaname='0.0' check:text='Vendor TaxID:' /&gt;" Guid="ab33ffa7-32db-4561-9b78-10ca72324f3f" SearchSteps="FuzzySelector" />
+                    </scg:List>
+                  </uix:TargetAnchorable.Anchors>
+                </uix:TargetAnchorable>
+              </uix:NTypeInto.Target>
+            </uix:NTypeInto>
+            <uix:NSelectItem DisplayName="Select Item (Year)" HealingAgentBehavior="SameAsCard" sap2010:WorkflowViewState.IdRef="NSelectItem_1" Item="[in_Year]" Version="V5">
+              <uix:NSelectItem.Target>
+                <uix:TargetAnchorable ContentHash="uhuYIeDddkK_tBMJVbrr2A" DesignTimeRectangle="344, 572, 275, 42" ElementType="Button" ElementVisibilityArgument="Interactive" FuzzySelectorArgument="&lt;webctrl tag='FORM' /&gt;&lt;webctrl aria-role='button' tag='BUTTON' type='button' class='btn dropdown-toggle bs-placeholder btn-default' aaname='---' matching:aria-role='fuzzy' fuzzylevel:aria-role='0.0' matching:class='fuzzy' fuzzylevel:class='0.0' matching:aaname='fuzzy' fuzzylevel:aaname='0.0' /&gt;" Guid="c0c15d0d-e0b6-40ef-ac46-0d02b618404f" InformativeScreenshot="e5cda7a75b3b67454746c7736141eb2e.jpg" Reference="Gk0ZsPmEKkOas-4bnDIx0g/0_vF6TYzn0iu_G3c0uaUwA" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*ACME System 1*' url='https://acme-test.uipath.com/*' /&gt;" SearchSteps="FuzzySelector" Version="V6" WaitForReadyArgument="Interactive">
+                  <uix:TargetAnchorable.Anchors>
+                    <scg:List x:TypeArguments="uix:ITarget" Capacity="1">
+                      <uix:Target DesignTimeRectangle="344, 541, 43, 25" ElementType="Text" FuzzySelectorArgument="&lt;webctrl tag='FORM' visibleinnertext='*Select Report File*' fuzzylevel:visibleinnertext='0.0' /&gt;&lt;webctrl aaname='Year:' parentid='searchForm' parentname='searchForm' tag='LABEL' type='' class='' matching:aaname='fuzzy' fuzzylevel:aaname='0.0' matching:parentid='fuzzy' fuzzylevel:parentid='0.0' matching:parentname='fuzzy' fuzzylevel:parentname='0.0' matching:class='fuzzy' fuzzylevel:class='0.0' check:text='Year:' /&gt;" Guid="fdda0f7b-b1fc-49a4-8117-9c2620d7483c" SearchSteps="FuzzySelector" />
+                    </scg:List>
+                  </uix:TargetAnchorable.Anchors>
+                </uix:TargetAnchorable>
+              </uix:NSelectItem.Target>
+            </uix:NSelectItem>
+            <uix:NBrowserFilePickerScope DisplayName="Browser File Picker Scope (yearly report)" sap2010:WorkflowViewState.IdRef="NBrowserFilePickerScope_1" SingleFilePath="[in_YearlyReportPath]" Version="V5" WaitForDialogToAppearTimeout="15">
+              <uix:NBrowserFilePickerScope.Body>
+                <Sequence DisplayName="Actions that trigger the file picker" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                  <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click Select Report File" HealingAgentBehavior="SameAsCard" sap2010:WorkflowViewState.IdRef="NClick_1" KeyModifiers="None" MouseButton="Left" Version="V5">
+                    <uix:NClick.Target>
+                      <uix:TargetAnchorable ContentHash="zxLRcftYCU-imQWatSq2wA" DesignTimeRectangle="344, 633, 171, 42" ElementType="Text" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl tag='FORM' visibleinnertext='*Select Report File*' /&gt;&lt;webctrl class='*btn-default*' parentid='searchForm' tag='LABEL' /&gt;" Guid="4a3900be-1298-46de-9dec-800ed2a0fc40" InformativeScreenshot="7a48c2d090ebc6051bcdf38bf36ba3ac.jpg" Reference="Gk0ZsPmEKkOas-4bnDIx0g/kOnG-IaKF0WFbNPZ5VYtIw" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*ACME System 1*' url='https://acme-test.uipath.com/*' /&gt;" SearchSteps="Selector" Version="V6" WaitForReadyArgument="Interactive" />
+                    </uix:NClick.Target>
+                  </uix:NClick>
+                </Sequence>
+              </uix:NBrowserFilePickerScope.Body>
+            </uix:NBrowserFilePickerScope>
+            <uix:NBrowserDialogScope DialogMessage="[ConfirmationText]" DialogResponse="OK" DisplayName="Browser Dialog Scope (upload confirmation)" sap2010:WorkflowViewState.IdRef="NBrowserDialogScope_1" Version="V5" WaitForDialogToAppearTimeout="30">
+              <uix:NBrowserDialogScope.Body>
+                <Sequence DisplayName="Actions that trigger the dialog" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                  <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click Upload Report" HealingAgentBehavior="SameAsCard" sap2010:WorkflowViewState.IdRef="NClick_2" KeyModifiers="None" MouseButton="Left" Version="V5">
+                    <uix:NClick.Target>
+                      <uix:TargetAnchorable ContentHash="8U4siRCD-EOym7BE1l70pA" DesignTimeRectangle="344, 694, 145, 42" ElementType="Button" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl id='searchForm' tag='FORM' /&gt;&lt;webctrl id='buttonUpload' tag='BUTTON' /&gt;" Guid="179c0062-7ba0-459e-a879-a939a188a982" InformativeScreenshot="872193a1011a391d2042d7000d418a1b.jpg" Reference="Gk0ZsPmEKkOas-4bnDIx0g/17B9_jEWkkygRngYMipcAQ" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*ACME System 1*' url='https://acme-test.uipath.com/*' /&gt;" SearchSteps="Selector" Version="V6" WaitForReadyArgument="Interactive" />
+                    </uix:NClick.Target>
+                  </uix:NClick>
+                </Sequence>
+              </uix:NBrowserDialogScope.Body>
+            </uix:NBrowserDialogScope>
+          </Sequence>
+        </ActivityAction>
+      </uix:NApplicationCard.Body>
+      <uix:NApplicationCard.OCREngine>
+        <ActivityFunc x:TypeArguments="sd:Image, scg:IEnumerable(scg:KeyValuePair(sd1:Rectangle, x:String))">
+          <ActivityFunc.Argument>
+            <DelegateInArgument x:TypeArguments="sd:Image" Name="Image" />
+          </ActivityFunc.Argument>
+        </ActivityFunc>
+      </uix:NApplicationCard.OCREngine>
+      <uix:NApplicationCard.TargetApp>
+        <uix:TargetApp Area="171, 249, 1611, 974" BrowserType="Chrome" ContentHash="4m3NFCCjPEONLa8NbSwJ8A" InformativeScreenshot="3973ddf0ae9d76218feeea809f346d96.jpg" Reference="Gk0ZsPmEKkOas-4bnDIx0g/RK4wNfI8VUCwXidDtrNQ8A" Selector="&lt;html app='chrome.exe' title='*ACME System 1*' url='https://acme-test.uipath.com/*' /&gt;" Url="https://acme-test.uipath.com/home" Version="V3">
+          <uix:TargetApp.SapInfo>
+            <uix:SAPElementInfo IsSapSubsystem="False" WebAutomationFramework="Default" />
+          </uix:TargetApp.SapInfo>
+        </uix:TargetApp>
+      </uix:NApplicationCard.TargetApp>
+    </uix:NApplicationCard>
+    <ui:LogMessage DisplayName="Log Message (confirmation text)" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;ACME upload confirmation: &quot; + If(ConfirmationText, &quot;&quot;)]" />
+    <Assign DisplayName="Assign out_Confirmation (ID from confirmation)" sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[out_Confirmation]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[Regex.Match(If(ConfirmationText, String.Empty), "confirmation id is\s*([A-Za-z0-9\-]+)", RegexOptions.IgnoreCase).Groups(1).Value.Trim]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <If Condition="[String.IsNullOrWhiteSpace(out_Confirmation)]" DisplayName="If no Upload ID" sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Then>
+        <Sequence DisplayName="Then" sap2010:WorkflowViewState.IdRef="Sequence_7">
+          <Throw DisplayName="Throw System Exception (upload failed)" Exception="[New Exception(&quot;Yearly report upload failed for Tax ID &quot; + in_TaxID + &quot;: no Upload ID in confirmation '&quot; + If(ConfirmationText, &quot;&quot;) + &quot;'.&quot;)]" sap2010:WorkflowViewState.IdRef="Throw_2" />
+        </Sequence>
+      </If.Then>
+    </If>
+    <ui:LogMessage DisplayName="Log Message (Upload ID)" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Yearly report uploaded for &quot; + in_TaxID + &quot;, Upload ID: &quot; + out_Confirmation]" />
+  </Sequence>
+</Activity>
