@@ -1,0 +1,288 @@
+<Activity mc:Ignorable="sap2010" x:Class="System1_System1_DownloadMonthlyReports" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Drawing;assembly=System.Drawing.Common" xmlns:sd1="clr-namespace:System.Drawing;assembly=System.Drawing.Primitives" xmlns:si="clr-namespace:System.IO;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property sap2010:Annotation.AnnotationText="Vendor Tax ID to download the monthly reports for." Name="in_TaxID" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Report year as shown in the ACME Year dropdown (e.g. 2025)." Name="in_Year" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Full path of the folder where the monthly CSVs are stored as &lt;TaxID&gt;-&lt;Year&gt;-&lt;MM&gt;.csv." Name="in_ReportDirPath" Type="InArgument(x:String)" />
+  </x:Members>
+  <VisualBasic.Settings>
+    <x:Null />
+  </VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>GlobalConstantsNamespace</x:String>
+      <x:String>GlobalVariablesNamespace</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Globalization</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>UiPath.UIAutomationNext.Enums</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic.Core</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Collections</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.TypeConverter</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Common</AssemblyReference>
+      <AssemblyReference>System.Drawing.Common</AssemblyReference>
+      <AssemblyReference>System.Drawing.Primitives</AssemblyReference>
+      <AssemblyReference>System.Linq</AssemblyReference>
+      <AssemblyReference>System.ObjectModel</AssemblyReference>
+      <AssemblyReference>System.Private.CoreLib</AssemblyReference>
+      <AssemblyReference>System.Runtime</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Workflow</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="On the Download Monthly Report page: enters the Tax ID and year, then downloads each month's report.&#xA;Each download is captured from the browser's Downloads folder (Wait for Download) and moved to in_ReportDirPath as &lt;TaxID&gt;-&lt;Year&gt;-&lt;MM&gt;.csv.&#xA;A missing month shows the ACME alert 'No report found...': logged at Info and skipped.&#xA;Leftover files for the Tax ID are deleted first so a retry never merges stale data.&#xA;No report at all for the year -&gt; BusinessRuleException. Anything else -&gt; System Exception." DisplayName="System1 Download Monthly Reports" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Default="[Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), &quot;Downloads&quot;)]" Name="DownloadFolder" />
+      <Variable x:TypeArguments="x:Int32" Default="30" Name="DownloadTimeoutSeconds" />
+      <Variable x:TypeArguments="x:Int32" Default="0" Name="DownloadedCount" />
+      <Variable x:TypeArguments="x:Int32" Default="0" Name="MissingCount" />
+    </Sequence.Variables>
+    <If Condition="[Not Directory.Exists(in_ReportDirPath)]" DisplayName="If report folder does not exist" sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Then>
+        <Sequence DisplayName="Then" sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <ui:CreateDirectory ContinueOnError="{x:Null}" Output="{x:Null}" DisplayName="Create Folder (report folder)" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[in_ReportDirPath]" />
+        </Sequence>
+      </If.Then>
+    </If>
+    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each leftover file for this Tax ID (report folder and Downloads)" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Directory.GetFiles(in_ReportDirPath, &quot;*&quot; &amp; in_TaxID &amp; &quot;*&quot;).Concat(Directory.GetFiles(DownloadFolder, &quot;Report-&quot; &amp; in_TaxID &amp; &quot;-*.csv&quot;)).ToArray]">
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="x:String">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:String" Name="leftoverFile" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_3">
+            <ui:DeleteFileX DisplayName="Delete File (leftover)" sap2010:WorkflowViewState.IdRef="DeleteFileX_1" Path="[leftoverFile]" />
+            <ui:LogMessage DisplayName="Log Message (leftover deleted)" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Trace" Message="[&quot;Deleted leftover file &quot; + leftoverFile]" />
+          </Sequence>
+        </ActivityAction>
+      </ui:ForEach.Body>
+    </ui:ForEach>
+    <uix:NApplicationCard AttachMode="ByInstance" CloseMode="Never" DisplayName="Use Browser Chrome: ACME System 1 (attach)" HealingAgentBehavior="Job" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" InteractionMode="DebuggerApi" OpenMode="Never" ScopeGuid="a09b9c3d-cf1c-43f4-8ace-354a6e2f1d90" Version="V2">
+      <uix:NApplicationCard.Body>
+        <ActivityAction x:TypeArguments="x:Object">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_4">
+            <uix:NCheckState DisplayName="Check App State: Download Monthly Report page loaded" HealingAgentBehavior="Disabled" sap2010:WorkflowViewState.IdRef="NCheckState_1" Timeout="10" Version="V5">
+              <uix:NCheckState.IfExists>
+                <Sequence DisplayName="Target appears" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                  <ui:LogMessage DisplayName="Log Message (page loaded)" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Trace" Message="[&quot;Download Monthly Report page loaded.&quot;]" />
+                </Sequence>
+              </uix:NCheckState.IfExists>
+              <uix:NCheckState.IfNotExists>
+                <Sequence DisplayName="Target does not appear" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                  <Throw DisplayName="Throw System Exception (page not loaded)" Exception="[New Exception(&quot;ACME Download Monthly Report page did not load.&quot;)]" sap2010:WorkflowViewState.IdRef="Throw_1" />
+                </Sequence>
+              </uix:NCheckState.IfNotExists>
+              <uix:NCheckState.Target>
+                <uix:TargetAnchorable ContentHash="qvQ-dRTOxkunAHQxWNPXZA" DesignTimeRectangle="344, 480, 606, 42" ElementType="InputBox" ElementVisibilityArgument="Interactive" FuzzySelectorArgument="&lt;webctrl tag='FORM' /&gt;&lt;webctrl id='vendorTaxID' tag='INPUT' type='text' class='form-control' aaname='' matching:id='fuzzy' fuzzylevel:id='0.0' matching:class='fuzzy' fuzzylevel:class='0.0' matching:aaname='fuzzy' fuzzylevel:aaname='0.0' /&gt;" Guid="66314bdf-9b37-496d-aa7c-004911a1808c" InformativeScreenshot="cf5d6c481f1750f94cee930564af2181.jpg" Reference="Gk0ZsPmEKkOas-4bnDIx0g/G6ZDpUpOTESPmCqmFvvPVw" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*ACME System 1*' url='https://acme-test.uipath.com/*' /&gt;" SearchSteps="FuzzySelector" Version="V6" WaitForReadyArgument="Interactive">
+                  <uix:TargetAnchorable.Anchors>
+                    <scg:List x:TypeArguments="uix:ITarget" Capacity="1">
+                      <uix:Target DesignTimeRectangle="344, 449, 116, 25" ElementType="Text" FuzzySelectorArgument="&lt;webctrl tag='LABEL' type='' class='' aaname='Vendor TaxID:' matching:class='fuzzy' fuzzylevel:class='0.0' matching:aaname='fuzzy' fuzzylevel:aaname='0.0' check:text='Vendor TaxID:' /&gt;" Guid="17389b98-0e73-469d-b20d-97a529adfa41" SearchSteps="FuzzySelector" />
+                    </scg:List>
+                  </uix:TargetAnchorable.Anchors>
+                </uix:TargetAnchorable>
+              </uix:NCheckState.Target>
+            </uix:NCheckState>
+            <uix:NTypeInto ActivateBefore="True" ClickBeforeMode="Single" DisplayName="Type Into Vendor TaxID" EmptyFieldMode="SingleLine" HealingAgentBehavior="SameAsCard" sap2010:WorkflowViewState.IdRef="NTypeInto_1" Text="[in_TaxID]" Version="V5">
+              <uix:NTypeInto.Target>
+                <uix:TargetAnchorable ContentHash="qvQ-dRTOxkunAHQxWNPXZA" DesignTimeRectangle="344, 480, 606, 42" ElementType="InputBox" ElementVisibilityArgument="Interactive" FuzzySelectorArgument="&lt;webctrl tag='FORM' /&gt;&lt;webctrl id='vendorTaxID' tag='INPUT' type='text' class='form-control' aaname='' matching:id='fuzzy' fuzzylevel:id='0.0' matching:class='fuzzy' fuzzylevel:class='0.0' matching:aaname='fuzzy' fuzzylevel:aaname='0.0' /&gt;" Guid="66314bdf-9b37-496d-aa7c-004911a1808c" InformativeScreenshot="cf5d6c481f1750f94cee930564af2181.jpg" Reference="Gk0ZsPmEKkOas-4bnDIx0g/G6ZDpUpOTESPmCqmFvvPVw" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*ACME System 1*' url='https://acme-test.uipath.com/*' /&gt;" SearchSteps="FuzzySelector" Version="V6" WaitForReadyArgument="Interactive">
+                  <uix:TargetAnchorable.Anchors>
+                    <scg:List x:TypeArguments="uix:ITarget" Capacity="1">
+                      <uix:Target DesignTimeRectangle="344, 449, 116, 25" ElementType="Text" FuzzySelectorArgument="&lt;webctrl tag='LABEL' type='' class='' aaname='Vendor TaxID:' matching:class='fuzzy' fuzzylevel:class='0.0' matching:aaname='fuzzy' fuzzylevel:aaname='0.0' check:text='Vendor TaxID:' /&gt;" Guid="17389b98-0e73-469d-b20d-97a529adfa41" SearchSteps="FuzzySelector" />
+                    </scg:List>
+                  </uix:TargetAnchorable.Anchors>
+                </uix:TargetAnchorable>
+              </uix:NTypeInto.Target>
+            </uix:NTypeInto>
+            <uix:NSelectItem DisplayName="Select Item (Year)" HealingAgentBehavior="SameAsCard" sap2010:WorkflowViewState.IdRef="NSelectItem_1" Item="[in_Year]" Version="V5">
+              <uix:NSelectItem.Target>
+                <uix:TargetAnchorable ContentHash="0k3TtkPn4EKhb90R3qlR5w" DesignTimeRectangle="344, 658, 275, 42" ElementType="Button" ElementVisibilityArgument="Interactive" FuzzySelectorArgument="&lt;webctrl tag='FORM' /&gt;&lt;webctrl aria-role='button' matching:aria-role='fuzzy' tag='BUTTON' fuzzylevel:aria-role='0.0' /&gt;" Guid="80986904-ddd9-4418-92ca-eb3e99e85745" InformativeScreenshot="986a29abed39bd176aad17377e5f8b0f.jpg" Reference="Gk0ZsPmEKkOas-4bnDIx0g/bHdbYG4YJ0uTKN74reGQKQ" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*ACME System 1*' url='https://acme-test.uipath.com/*' /&gt;" SearchSteps="FuzzySelector" Version="V6" WaitForReadyArgument="Interactive">
+                  <uix:TargetAnchorable.Anchors>
+                    <scg:List x:TypeArguments="uix:ITarget" Capacity="1">
+                      <uix:Target DesignTimeRectangle="344, 627, 43, 25" ElementType="Text" FuzzySelectorArgument="&lt;webctrl tag='FORM' visibleinnertext='*Download Report*' fuzzylevel:visibleinnertext='0.0' /&gt;&lt;webctrl aaname='Year:' parentid='searchForm' parentname='searchForm' tag='LABEL' type='' class='' matching:aaname='fuzzy' fuzzylevel:aaname='0.0' matching:parentid='fuzzy' fuzzylevel:parentid='0.0' matching:parentname='fuzzy' fuzzylevel:parentname='0.0' matching:class='fuzzy' fuzzylevel:class='0.0' check:text='Year:' /&gt;" Guid="946f1440-0453-419e-9781-d717ab64e1a0" SearchSteps="FuzzySelector" />
+                    </scg:List>
+                  </uix:TargetAnchorable.Anchors>
+                </uix:TargetAnchorable>
+              </uix:NSelectItem.Target>
+            </uix:NSelectItem>
+            <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" DisplayName="For Each month (1-12)" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[Enumerable.Range(1, 12)]">
+              <ui:ForEach.Body>
+                <ActivityAction x:TypeArguments="x:Int32">
+                  <ActivityAction.Argument>
+                    <DelegateInArgument x:TypeArguments="x:Int32" Name="monthIndex" />
+                  </ActivityAction.Argument>
+                  <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                    <Sequence.Variables>
+                      <Variable x:TypeArguments="x:String" Name="MonthName" />
+                      <Variable x:TypeArguments="x:String" Name="DialogMessage" />
+                      <Variable x:TypeArguments="si:FileInfo" Name="DownloadedFile" />
+                      <Variable x:TypeArguments="x:String" Name="MonthlyReportPath" />
+                    </Sequence.Variables>
+                    <ui:MultipleAssign DisplayName="Multiple Assign (month name, report path, reset dialog)" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+                      <ui:MultipleAssign.AssignOperations>
+                        <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+                          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
+                            <ui:AssignOperation.To>
+                              <OutArgument x:TypeArguments="x:String">[MonthName]</OutArgument>
+                            </ui:AssignOperation.To>
+                            <ui:AssignOperation.Value>
+                              <InArgument x:TypeArguments="x:String">[CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(monthIndex)]</InArgument>
+                            </ui:AssignOperation.Value>
+                          </ui:AssignOperation>
+                          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
+                            <ui:AssignOperation.To>
+                              <OutArgument x:TypeArguments="x:String">[MonthlyReportPath]</OutArgument>
+                            </ui:AssignOperation.To>
+                            <ui:AssignOperation.Value>
+                              <InArgument x:TypeArguments="x:String">[Path.Combine(in_ReportDirPath, in_TaxID &amp; "-" &amp; in_Year &amp; "-" &amp; monthIndex.ToString("00") &amp; ".csv")]</InArgument>
+                            </ui:AssignOperation.Value>
+                          </ui:AssignOperation>
+                          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
+                            <ui:AssignOperation.To>
+                              <OutArgument x:TypeArguments="x:String">[DialogMessage]</OutArgument>
+                            </ui:AssignOperation.To>
+                            <ui:AssignOperation.Value>
+                              <InArgument x:TypeArguments="x:String">[String.Empty]</InArgument>
+                            </ui:AssignOperation.Value>
+                          </ui:AssignOperation>
+                        </scg:List>
+                      </ui:MultipleAssign.AssignOperations>
+                    </ui:MultipleAssign>
+                    <uix:NSelectItem DisplayName="Select Item (Month)" HealingAgentBehavior="SameAsCard" sap2010:WorkflowViewState.IdRef="NSelectItem_2" Item="[MonthName]" Version="V5">
+                      <uix:NSelectItem.Target>
+                        <uix:TargetAnchorable ContentHash="O-8pMmrz20qi37rUZKGeHQ" DesignTimeRectangle="344, 572, 275, 42" ElementType="Button" ElementVisibilityArgument="Interactive" FuzzySelectorArgument="&lt;webctrl tag='FORM' /&gt;&lt;webctrl class='*bootstrap-select*' parentid='searchForm' tag='DIV' fuzzylevel:class='0.0' matching:parentid='fuzzy' fuzzylevel:parentid='0.0' /&gt;&lt;webctrl aria-role='button' tag='BUTTON' matching:aria-role='fuzzy' fuzzylevel:aria-role='0.0' /&gt;" Guid="9ec7992b-af03-4750-b81e-6469485c4bb7" InformativeScreenshot="08da88bdde999635f7c539332d009072.jpg" Reference="Gk0ZsPmEKkOas-4bnDIx0g/4gCTIXlzX0mQrRVEUV1g9A" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*ACME System 1*' url='https://acme-test.uipath.com/*' /&gt;" SearchSteps="FuzzySelector" Version="V6" WaitForReadyArgument="Interactive">
+                          <uix:TargetAnchorable.Anchors>
+                            <scg:List x:TypeArguments="uix:ITarget" Capacity="1">
+                              <uix:Target DesignTimeRectangle="344, 541, 58, 25" ElementType="Text" FuzzySelectorArgument="&lt;webctrl tag='FORM' visibleinnertext='*Download Report*' fuzzylevel:visibleinnertext='0.0' /&gt;&lt;webctrl aaname='Month:' parentid='searchForm' parentname='searchForm' tag='LABEL' type='' class='' matching:aaname='fuzzy' fuzzylevel:aaname='0.0' matching:parentid='fuzzy' fuzzylevel:parentid='0.0' matching:parentname='fuzzy' fuzzylevel:parentname='0.0' matching:class='fuzzy' fuzzylevel:class='0.0' check:text='Month:' /&gt;" Guid="a93182e4-23da-4f97-8ea2-eddc8484e78c" SearchSteps="FuzzySelector" />
+                            </scg:List>
+                          </uix:TargetAnchorable.Anchors>
+                        </uix:TargetAnchorable>
+                      </uix:NSelectItem.Target>
+                    </uix:NSelectItem>
+                    <TryCatch DisplayName="Try Catch (download month)" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+                      <TryCatch.Try>
+                        <Sequence DisplayName="Try" sap2010:WorkflowViewState.IdRef="Sequence_8">
+                          <ui:GetLastDownloadedFile FileResource="{x:Null}" IgnoreFiles="{x:Null}" DisplayName="Wait for Download (monthly report)" DownloadFolder="[DownloadFolder]" File="[DownloadedFile]" sap2010:WorkflowViewState.IdRef="GetLastDownloadedFile_1" Timeout="[DownloadTimeoutSeconds]">
+                            <ui:GetLastDownloadedFile.Body>
+                              <ActivityAction>
+                                <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_9">
+                                  <uix:NBrowserDialogScope ContinueOnError="True" DialogMessage="[DialogMessage]" DialogResponse="OK" DisplayName="Browser Dialog Scope ('No report found' alert)" sap2010:WorkflowViewState.IdRef="NBrowserDialogScope_1" Version="V5" WaitForDialogToAppearTimeout="3">
+                                    <uix:NBrowserDialogScope.Body>
+                                      <Sequence DisplayName="Actions that trigger the dialog" sap2010:WorkflowViewState.IdRef="Sequence_10">
+                                        <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click Download Report" HealingAgentBehavior="SameAsCard" sap2010:WorkflowViewState.IdRef="NClick_1" KeyModifiers="None" MouseButton="Left" Version="V5">
+                                          <uix:NClick.Target>
+                                            <uix:TargetAnchorable ContentHash="yXDWtVVd2EKP38PG32cU8w" DesignTimeRectangle="344, 719, 167, 42" ElementType="Button" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl id='searchForm' tag='FORM' /&gt;&lt;webctrl id='buttonDownload' tag='BUTTON' /&gt;" Guid="973b65df-8404-45da-ac44-947e479f2025" InformativeScreenshot="ac7c0fa46acccce3890988538864121e.jpg" Reference="Gk0ZsPmEKkOas-4bnDIx0g/YP2TyOpVQUWpQJEMJoeX7Q" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*ACME System 1*' url='https://acme-test.uipath.com/*' /&gt;" SearchSteps="Selector" Version="V6" WaitForReadyArgument="Interactive" />
+                                          </uix:NClick.Target>
+                                        </uix:NClick>
+                                      </Sequence>
+                                    </uix:NBrowserDialogScope.Body>
+                                  </uix:NBrowserDialogScope>
+                                </Sequence>
+                              </ActivityAction>
+                            </ui:GetLastDownloadedFile.Body>
+                          </ui:GetLastDownloadedFile>
+                          <ui:MoveFile ContinueOnError="{x:Null}" DestinationResource="{x:Null}" PathResource="{x:Null}" Destination="[MonthlyReportPath]" DisplayName="Move File (to report folder)" sap2010:WorkflowViewState.IdRef="MoveFile_1" Overwrite="True" Path="[DownloadedFile.FullName]" />
+                          <Assign DisplayName="Assign DownloadedCount + 1" sap2010:WorkflowViewState.IdRef="Assign_1">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Int32">[DownloadedCount]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Int32">[DownloadedCount + 1]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <ui:LogMessage DisplayName="Log Message (month downloaded)" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Downloaded monthly report &quot; + MonthName + &quot; &quot; + in_Year + &quot; for &quot; + in_TaxID + &quot; to &quot; + MonthlyReportPath]" />
+                        </Sequence>
+                      </TryCatch.Try>
+                      <TryCatch.Catches>
+                        <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+                          <ActivityAction x:TypeArguments="s:Exception">
+                            <ActivityAction.Argument>
+                              <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                            </ActivityAction.Argument>
+                            <Sequence DisplayName="Catch" sap2010:WorkflowViewState.IdRef="Sequence_11">
+                              <If Condition="[Not String.IsNullOrEmpty(DialogMessage) AndAlso DialogMessage.ToLower.Contains(&quot;no report found&quot;)]" DisplayName="If ACME reported 'No report found'" sap2010:WorkflowViewState.IdRef="If_2">
+                                <If.Then>
+                                  <Sequence DisplayName="Then" sap2010:WorkflowViewState.IdRef="Sequence_12">
+                                    <ui:LogMessage DisplayName="Log Message (month missing, skipped)" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Monthly report &quot; + MonthName + &quot; &quot; + in_Year + &quot; not available for &quot; + in_TaxID + &quot;; skipped. ACME: &quot; + DialogMessage.Trim]" />
+                                    <Assign DisplayName="Assign MissingCount + 1" sap2010:WorkflowViewState.IdRef="Assign_2">
+                                      <Assign.To>
+                                        <OutArgument x:TypeArguments="x:Int32">[MissingCount]</OutArgument>
+                                      </Assign.To>
+                                      <Assign.Value>
+                                        <InArgument x:TypeArguments="x:Int32">[MissingCount + 1]</InArgument>
+                                      </Assign.Value>
+                                    </Assign>
+                                  </Sequence>
+                                </If.Then>
+                                <If.Else>
+                                  <Sequence DisplayName="Else" sap2010:WorkflowViewState.IdRef="Sequence_13">
+                                    <ui:LogMessage DisplayName="Log Message (download failed)" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Warn" Message="[&quot;Download of monthly report &quot; + MonthName + &quot; &quot; + in_Year + &quot; failed for &quot; + in_TaxID + &quot;: &quot; + exception.Message]" />
+                                    <Rethrow DisplayName="Rethrow" sap2010:WorkflowViewState.IdRef="Rethrow_1" />
+                                  </Sequence>
+                                </If.Else>
+                              </If>
+                            </Sequence>
+                          </ActivityAction>
+                        </Catch>
+                      </TryCatch.Catches>
+                    </TryCatch>
+                  </Sequence>
+                </ActivityAction>
+              </ui:ForEach.Body>
+            </ui:ForEach>
+          </Sequence>
+        </ActivityAction>
+      </uix:NApplicationCard.Body>
+      <uix:NApplicationCard.OCREngine>
+        <ActivityFunc x:TypeArguments="sd:Image, scg:IEnumerable(scg:KeyValuePair(sd1:Rectangle, x:String))">
+          <ActivityFunc.Argument>
+            <DelegateInArgument x:TypeArguments="sd:Image" Name="Image" />
+          </ActivityFunc.Argument>
+        </ActivityFunc>
+      </uix:NApplicationCard.OCREngine>
+      <uix:NApplicationCard.TargetApp>
+        <uix:TargetApp Area="171, 249, 1611, 974" BrowserType="Chrome" ContentHash="4m3NFCCjPEONLa8NbSwJ8A" InformativeScreenshot="3973ddf0ae9d76218feeea809f346d96.jpg" Reference="Gk0ZsPmEKkOas-4bnDIx0g/RK4wNfI8VUCwXidDtrNQ8A" Selector="&lt;html app='chrome.exe' title='*ACME System 1*' url='https://acme-test.uipath.com/*' /&gt;" Url="https://acme-test.uipath.com/home" Version="V3">
+          <uix:TargetApp.SapInfo>
+            <uix:SAPElementInfo IsSapSubsystem="False" WebAutomationFramework="Default" />
+          </uix:TargetApp.SapInfo>
+        </uix:TargetApp>
+      </uix:NApplicationCard.TargetApp>
+    </uix:NApplicationCard>
+    <If Condition="[DownloadedCount = 0]" DisplayName="If no monthly report found for the year" sap2010:WorkflowViewState.IdRef="If_3">
+      <If.Then>
+        <Sequence DisplayName="Then" sap2010:WorkflowViewState.IdRef="Sequence_14">
+          <Throw DisplayName="Throw BusinessRuleException (no reports)" Exception="[New BusinessRuleException(&quot;No monthly reports found for Tax ID &quot; + in_TaxID + &quot; in &quot; + in_Year + &quot;.&quot;)]" sap2010:WorkflowViewState.IdRef="Throw_2" />
+        </Sequence>
+      </If.Then>
+    </If>
+    <ui:LogMessage DisplayName="Log Message (summary)" sap2010:WorkflowViewState.IdRef="LogMessage_6" Level="Info" Message="[&quot;Monthly reports for &quot; + in_TaxID + &quot; &quot; + in_Year + &quot;: &quot; + DownloadedCount.ToString + &quot; downloaded, &quot; + MissingCount.ToString + &quot; missing.&quot;]" />
+  </Sequence>
+</Activity>

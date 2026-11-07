@@ -12,8 +12,6 @@
     "ReportDirPath": "Data\\Output\\Reports",
     "ReportYear": "2025",
     "Status": "Completed",
-    "BrowserDownloadFolder": "",
-    "DownloadTimeoutSeconds": 15,
     "ExceptionsEmailAddress": "exceptions@acme-test.com",
     "SendExceptionEmail": false
   },
